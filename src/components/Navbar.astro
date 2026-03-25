@@ -1,0 +1,96 @@
+---
+import { Image } from 'astro:assets';
+import { Menu, X } from 'lucide-react';
+import { getLangFromUrl, useTranslations } from '../i18n/utils';
+
+import logoImg from '../assets/logos/LogoSena.png';
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+---
+
+<nav id="navbar" class="fixed top-0 left-0 w-full z-50 transition-all duration-500 bg-transparent py-6">
+	<div class="container mx-auto px-6 md:px-12 flex justify-between items-center">
+		<a href="/" class="flex items-center space-x-3 group">
+			<Image 
+				src={logoImg} 
+				alt="Julien Sena Logo" 
+				class="h-12 w-auto filter invert brightness-200 group-hover:scale-105 transition-transform duration-300" 
+				loading="eager"
+			/>
+		</a>
+
+		<!-- Desktop Menu -->
+		<div class="hidden md:flex items-center space-x-8">
+			<a href="#portfolio" class="text-sm uppercase tracking-widest text-gray-300 hover:text-[#D4AF37] transition-colors font-semibold">{t('nav.portfolio')}</a>
+			<a href="#equipment" class="text-sm uppercase tracking-widest text-gray-300 hover:text-[#D4AF37] transition-colors font-semibold">{t('nav.equipment')}</a>
+			<a href="#contact" class="text-sm uppercase tracking-widest text-gray-300 hover:text-[#D4AF37] transition-colors font-semibold border border-white/10 px-6 py-2 rounded-full hover:bg-white/5 transition-all">{t('nav.contact')}</a>
+			
+			<!-- Language Switcher -->
+			<div class="flex items-center space-x-3 ml-4 border-l border-white/10 pl-8">
+				<a href="/" class={`text-[10px] font-bold tracking-widest transition-colors ${lang === 'fr' ? 'text-[#D4AF37]' : 'text-gray-500 hover:text-white'}`}>FR</a>
+				<span class="text-gray-700 text-[10px]">/</span>
+				<a href="/en" class={`text-[10px] font-bold tracking-widest transition-colors ${lang === 'en' ? 'text-[#D4AF37]' : 'text-gray-500 hover:text-white'}`}>EN</a>
+			</div>
+		</div>
+
+		<!-- Mobile Menu Toggle -->
+		<button id="menu-toggle" class="md:hidden text-white hover:text-[#D4AF37] transition-colors">
+			<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-menu"><line x1="4" x2="20" y1="12" y2="12"></line><line x1="4" x2="20" y1="6" y2="6"></line><line x1="4" x2="20" y1="18" y2="18"></line></svg>
+		</button>
+	</div>
+
+	<!-- Mobile Menu -->
+	<div id="mobile-menu" class="fixed inset-0 bg-[#050505] z-50 transform translate-x-full transition-transform duration-500 ease-in-out md:hidden flex flex-col items-center justify-center space-y-8">
+		<button id="menu-close" class="absolute top-8 right-8 text-white hover:text-[#D4AF37] transition-colors">
+			<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-x"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg>
+		</button>
+		<a href="#portfolio" class="text-2xl uppercase tracking-widest text-white hover:text-[#D4AF37] transition-colors font-display font-bold mobile-link">{t('nav.portfolio')}</a>
+		<a href="#equipment" class="text-2xl uppercase tracking-widest text-white hover:text-[#D4AF37] transition-colors font-display font-bold mobile-link">{t('nav.equipment')}</a>
+		<a href="#contact" class="text-2xl uppercase tracking-widest text-white hover:text-[#D4AF37] transition-colors font-display font-bold mobile-link">{t('nav.contact')}</a>
+		
+		<!-- Mobile Language Switcher -->
+		<div class="flex items-center space-x-6 mt-8">
+			<a href="/" class={`text-sm font-bold tracking-[0.3em] transition-colors ${lang === 'fr' ? 'text-[#D4AF37]' : 'text-gray-500'}`}>FR</a>
+			<span class="text-gray-700">|</span>
+			<a href="/en" class={`text-sm font-bold tracking-[0.3em] transition-colors ${lang === 'en' ? 'text-[#D4AF37]' : 'text-gray-500'}`}>EN</a>
+		</div>
+
+		<div class="flex space-x-6 mt-12 pb-20">
+			<a href="https://www.imdb.com/name/nm4502347/" target="_blank" class="text-gray-400 hover:text-white transition-colors">IMDB</a>
+			<a href="https://www.unifrance.org/annuaires/personne/373018/julien-sena" target="_blank" class="text-gray-400 hover:text-white transition-colors">Unifrance</a>
+		</div>
+	</div>
+</nav>
+
+<script>
+	const navbar = document.getElementById('navbar');
+	const menuToggle = document.getElementById('menu-toggle');
+	const menuClose = document.getElementById('menu-close');
+	const mobileMenu = document.getElementById('mobile-menu');
+	const mobileLinks = document.querySelectorAll('.mobile-link');
+
+	window.addEventListener('scroll', () => {
+		if (window.scrollY > 50) {
+			navbar?.classList.add('bg-[#050505]/90', 'backdrop-blur-xl', 'py-4', 'border-b', 'border-white/5');
+			navbar?.classList.remove('py-6');
+		} else {
+			navbar?.classList.remove('bg-[#050505]/90', 'backdrop-blur-xl', 'py-4', 'border-b', 'border-white/5');
+			navbar?.classList.add('py-6');
+		}
+	});
+
+	menuToggle?.addEventListener('click', () => {
+		mobileMenu?.classList.remove('translate-x-full');
+	});
+
+	menuClose?.addEventListener('click', () => {
+		mobileMenu?.classList.add('translate-x-full');
+	});
+
+	mobileLinks.forEach(link => {
+		link.addEventListener('click', () => {
+			mobileMenu?.classList.add('translate-x-full');
+		});
+	});
+</script>

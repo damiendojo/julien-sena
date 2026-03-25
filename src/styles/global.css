@@ -1,0 +1,81 @@
+@import "tailwindcss";
+
+@layer base {
+	html {
+		scrollbar-gutter: stable;
+	}
+	
+	body {
+		@apply bg-[#050505] text-white antialiased;
+	}
+}
+
+@utility glass {
+	background-color: rgb(13 13 13 / 0.6);
+	backdrop-filter: blur(12px);
+	border: 1px solid rgb(255 255 255 / 0.05);
+}
+
+@utility text-balance {
+	text-wrap: balance;
+}
+
+@utility section-title {
+	font-size: 2.25rem;
+	line-height: 2.5rem;
+	@media (min-width: 768px) {
+		font-size: 3rem;
+		line-height: 1;
+	}
+	font-weight: 700;
+	letter-spacing: -0.025em;
+	margin-bottom: 2rem;
+	font-family: 'Montserrat', sans-serif;
+}
+
+@utility btn-primary {
+	padding-inline: 2rem;
+	padding-vertical: 0.75rem;
+	background-color: #D4AF37;
+	color: #000;
+	font-weight: 600;
+	border-radius: 9999px;
+	transition: all 0.3s;
+	&:hover {
+		background-color: #F3E5AB;
+	}
+	&:active {
+		scale: 0.95;
+	}
+}
+
+@utility btn-secondary {
+	padding-inline: 2rem;
+	padding-vertical: 0.75rem;
+	background-color: rgb(255 255 255 / 0.05);
+	color: #fff;
+	font-weight: 600;
+	border-radius: 9999px;
+	border: 1px solid rgb(255 255 255 / 0.1);
+	transition: all 0.3s;
+	&:hover {
+		background-color: rgb(255 255 255 / 0.1);
+	}
+	&:active {
+		scale: 0.95;
+	}
+}
+
+@layer utilities {
+	.text-gold {
+		color: #D4AF37;
+	}
+	
+	.bg-gold {
+		background-color: #D4AF37;
+	}
+	
+	.border-gold {
+		border-color: #D4AF37;
+	}
+}

@@ -1,0 +1,104 @@
+---
+import '../styles/global.css';
+import Loader from '../components/Loader.astro';
+
+interface Props {
+	title: string;
+	description?: string;
+	lang?: 'fr' | 'en';
+}
+
+const { title, description = "Julien Sena - Production Sound Mixer", lang = 'fr' } = Astro.props;
+---
+
+<!doctype html>
+<html lang={lang} class="scroll-smooth">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width" />
+		<link rel="icon" type="image/png" href="/assets/logos/LogoSena.png" />
+		<meta name="generator" content={Astro.generator} />
+		<title>{title}</title>
+		<meta name="description" content={description} />
+		<link rel="canonical" href="https://www.juliensena.fr/" />
+		<meta name="robots" content="index, follow" />
+
+		<!-- Open Graph / Facebook -->
+		<meta property="og:type" content="website" />
+		<meta property="og:url" content="https://www.juliensena.fr/" />
+		<meta property="og:title" content={title} />
+		<meta property="og:description" content={description} />
+		<meta property="og:image" content="https://www.juliensena.fr/assets/photos/IMG_1792.JPG" />
+
+		<!-- Twitter -->
+		<meta property="twitter:card" content="summary_large_image" />
+		<meta property="twitter:url" content="https://www.juliensena.fr/" />
+		<meta property="twitter:title" content={title} />
+		<meta property="twitter:description" content={description} />
+		<meta property="twitter:image" content="https://www.juliensena.fr/assets/photos/IMG_1792.JPG" />
+		<meta name="robots" content="index, follow" />
+
+		<!-- Structured Data -->
+		<script type="application/ld+json" set:html={JSON.stringify({
+			"@context": "https://schema.org",
+			"@type": "Person",
+			"name": "Julien Sena",
+			"jobTitle": "Production Sound Mixer",
+			"url": "https://www.juliensena.fr/",
+			"sameAs": [
+				"https://www.imdb.com/name/nm4502347/",
+				"https://www.unifrance.org/annuaires/personne/373018/julien-sena"
+			],
+			"description": description,
+			"address": {
+				"@type": "PostalAddress",
+				"addressLocality": "Romainville",
+				"addressRegion": "Région Parisienne",
+				"addressCountry": "FR"
+			}
+		})} />
+
+		<link rel="preconnect" href="https://fonts.googleapis.com">
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+		<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+	</head>
+	<body class="bg-[#050505] text-gray-200 antialiased selection:bg-gold-500/30 selection:text-gold-200 overflow-x-hidden">
+		<Loader />
+		<slot />
+	</body>
+</html>
+
+<style is:global>
+	:root {
+		--gold-500: #D4AF37;
+		--gold-200: #F3E5AB;
+	}
+	
+	body {
+		font-family: 'Inter', sans-serif;
+	}
+
+	h1, h2, h3, h4, .font-display {
+		font-family: 'Montserrat', sans-serif;
+	}
+
+	::selection {
+		background: rgba(212, 175, 55, 0.3);
+		color: #F3E5AB;
+	}
+
+	/* Custom Scrollbar */
+	::-webkit-scrollbar {
+		width: 8px;
+	}
+	::-webkit-scrollbar-track {
+		background: #050505;
+	}
+	::-webkit-scrollbar-thumb {
+		background: #262626;
+		border-radius: 10px;
+	}
+	::-webkit-scrollbar-thumb:hover {
+		background: #333;
+	}
+</style>

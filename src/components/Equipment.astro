@@ -1,0 +1,86 @@
+---
+import { getLangFromUrl, useTranslations } from '../i18n/utils';
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+
+const equipmentCategories = [
+	{
+		title: t('equipment.cat.recording'),
+		items: [
+			"1 Enregistreur Zaxcom Nomad 12 Touch",
+			"1 Enregistreur Zaxcom Nomad 10 pistes",
+			"1 surface de mixage Zaxcom Mix8",
+			"1 boitier de gestion d'alimentation audioroot",
+			"1 roulante Son"
+		]
+	},
+	{
+		title: t('equipment.cat.wireless'),
+		items: [
+			"1 splitter d'antenne Betso Octopus",
+			"2 antennes bowtie Betso",
+			"3 boitiers TC Tentacles sync",
+			"2 wisycom mcr42S3 + 1 mtp40S + 3 mtp41S",
+			"2 HF Sennheiser EK 100 + 2 EW 100 G3"
+		]
+	},
+	{
+		title: t('equipment.cat.microphones'),
+		items: [
+			"1 micro Schoeps CMIT",
+			"1 micro Schoeps cmc6mk41",
+			"1 micro Neumann km150",
+			"4 micros cravate Sanken COS11-D",
+			"1 couple Stereo Oktava",
+			"1 Ambient UMPIII + 1 Ambient UMPII"
+		]
+	},
+	{
+		title: t('equipment.cat.accessories'),
+		items: [
+			"1 perche Ambient",
+			"1 perche VDB",
+			"Kit de protection vent",
+			"Accessoires divers"
+		]
+	}
+];
+---
+
+<section id="equipment" class="py-24 bg-[#0A0A0A] border-y border-white/5">
+	<div class="container mx-auto px-6 md:px-12">
+		<div class="max-w-3xl mb-16">
+			<h2 class="text-xs font-bold tracking-[0.3em] text-[#D4AF37] uppercase mb-4">{t('equipment.title')}</h2>
+			<h3 class="text-4xl md:text-6xl font-black text-white uppercase font-display leading-none">
+				{t('equipment.subtitle_1')} <span class="text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-500">{t('equipment.subtitle_2')}</span>
+			</h3>
+			<p class="mt-6 text-gray-400 text-lg leading-relaxed">
+				{t('equipment.description')}
+			</p>
+		</div>
+
+		<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+			{equipmentCategories.map((category, index) => (
+				<div class="group p-8 bg-white/5 border border-white/10 hover:border-[#D4AF37]/30 transition-all duration-500">
+					<h4 class="text-white text-xl font-bold uppercase mb-6 font-display group-hover:text-[#D4AF37] transition-colors">{category.title}</h4>
+					<ul class="space-y-4">
+						{category.items.map(item => (
+							<li class="flex items-start space-x-3 text-sm text-gray-400 leading-snug">
+								<span class="w-1.5 h-1.5 bg-[#D4AF37] mt-1.5 shrink-0 rounded-full group-hover:scale-150 transition-transform"></span>
+								<span>{item}</span>
+							</li>
+						))}
+					</ul>
+				</div>
+			))}
+		</div>
+
+		<div class="mt-16 flex justify-center">
+			<a href="/assets/CV_Sena_Julien.pdf" target="_blank" class="px-8 py-3 bg-white/5 hover:bg-[#D4AF37] text-white hover:text-black font-bold uppercase tracking-widest text-xs transition-all duration-500 border border-white/10 flex items-center gap-3">
+				{t('equipment.download_cv')}
+				<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-download"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" x2="12" y1="15" y2="3"></line></svg>
+			</a>
+		</div>
+	</div>
+</section>
