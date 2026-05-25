@@ -17,7 +17,10 @@ export default async function fetchApi<T>({
     endpoint = endpoint.substring(1);
   }
 
-  const url = new URL(`${import.meta.env.PUBLIC_STRAPI_URL}/api/${endpoint}`);
+  const baseUrl = import.meta.env.PUBLIC_STRAPI_URL || process.env.PUBLIC_STRAPI_URL || 'https://optimistic-warmth-6e7694b576.strapiapp.com';
+  const token = import.meta.env.STRAPI_API_TOKEN || process.env.STRAPI_API_TOKEN;
+
+  const url = new URL(`${baseUrl}/api/${endpoint}`);
 
   if (query) {
     Object.entries(query).forEach(([key, value]) => {
@@ -27,7 +30,7 @@ export default async function fetchApi<T>({
 
   const res = await fetch(url.toString(), {
     headers: {
-      Authorization: `Bearer ${import.meta.env.STRAPI_API_TOKEN}`,
+      Authorization: `Bearer ${token}`,
     },
   });
 
