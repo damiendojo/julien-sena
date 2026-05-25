@@ -38,29 +38,99 @@ const t = useTranslations(lang);
 				</div>
 			</div>
 
-			<form class="space-y-6 bg-white/5 p-8 border border-white/10 backdrop-blur-sm">
+			<form id="contact-form" data-access-key={import.meta.env.PUBLIC_WEB3FORMS_ACCESS_KEY} data-lang={lang} class="space-y-6 bg-white/5 p-8 border border-white/10 backdrop-blur-sm">
 				<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
 					<div class="space-y-2">
-						<label class="text-[10px] uppercase tracking-widest text-gray-500 font-bold ml-1">{t('contact.form.name_label')}</label>
-						<input type="text" placeholder={t('contact.form.name_placeholder')} class="w-full bg-[#050505] border border-white/10 px-4 py-4 text-white text-sm focus:border-[#D4AF37] outline-none transition-colors" />
+						<label for="name" class="text-[10px] uppercase tracking-widest text-gray-500 font-bold ml-1">{t('contact.form.name_label')}</label>
+						<input id="name" name="name" required type="text" placeholder={t('contact.form.name_placeholder')} class="w-full bg-[#050505] border border-white/10 px-4 py-4 text-white text-sm focus:border-[#D4AF37] outline-none transition-colors" />
 					</div>
 					<div class="space-y-2">
-						<label class="text-[10px] uppercase tracking-widest text-gray-500 font-bold ml-1">{t('contact.form.email_label')}</label>
-						<input type="email" placeholder={t('contact.form.email_placeholder')} class="w-full bg-[#050505] border border-white/10 px-4 py-4 text-white text-sm focus:border-[#D4AF37] outline-none transition-colors" />
+						<label for="email" class="text-[10px] uppercase tracking-widest text-gray-500 font-bold ml-1">{t('contact.form.email_label')}</label>
+						<input id="email" name="email" required type="email" placeholder={t('contact.form.email_placeholder')} class="w-full bg-[#050505] border border-white/10 px-4 py-4 text-white text-sm focus:border-[#D4AF37] outline-none transition-colors" />
 					</div>
 				</div>
 				<div class="space-y-2">
-					<label class="text-[10px] uppercase tracking-widest text-gray-500 font-bold ml-1">{t('contact.form.subject_label')}</label>
-					<input type="text" placeholder={t('contact.form.subject_placeholder')} class="w-full bg-[#050505] border border-white/10 px-4 py-4 text-white text-sm focus:border-[#D4AF37] outline-none transition-colors" />
+					<label for="subject" class="text-[10px] uppercase tracking-widest text-gray-500 font-bold ml-1">{t('contact.form.subject_label')}</label>
+					<input id="subject" name="subject" required type="text" placeholder={t('contact.form.subject_placeholder')} class="w-full bg-[#050505] border border-white/10 px-4 py-4 text-white text-sm focus:border-[#D4AF37] outline-none transition-colors" />
 				</div>
 				<div class="space-y-2">
-					<label class="text-[10px] uppercase tracking-widest text-gray-500 font-bold ml-1">{t('contact.form.message_label')}</label>
-					<textarea rows="4" placeholder={t('contact.form.message_placeholder')} class="w-full bg-[#050505] border border-white/10 px-4 py-4 text-white text-sm focus:border-[#D4AF37] outline-none transition-colors resize-none"></textarea>
+					<label for="message" class="text-[10px] uppercase tracking-widest text-gray-500 font-bold ml-1">{t('contact.form.message_label')}</label>
+					<textarea id="message" name="message" required rows="4" placeholder={t('contact.form.message_placeholder')} class="w-full bg-[#050505] border border-white/10 px-4 py-4 text-white text-sm focus:border-[#D4AF37] outline-none transition-colors resize-none"></textarea>
 				</div>
-				<button type="submit" class="w-full py-4 bg-[#D4AF37] hover:bg-white text-black font-black uppercase tracking-[0.2em] text-xs transition-all duration-500">
+				<button id="submit-btn" type="submit" class="w-full py-4 bg-[#D4AF37] hover:bg-white text-black font-black uppercase tracking-[0.2em] text-xs transition-all duration-500">
 					{t('contact.form.send')}
 				</button>
+				<div id="form-status" class="text-center text-xs font-bold uppercase tracking-wider hidden mt-4"></div>
 			</form>
 		</div>
 	</div>
 </section>
+
+<script>
+	const form = document.getElementById('contact-form') as HTMLFormElement;
+	const submitBtn = document.getElementById('submit-btn') as HTMLButtonElement;
+	const formStatus = document.getElementById('form-status') as HTMLDivElement;
+
+	if (form) {
+		form.addEventListener('submit', async (e) => {
+			e.preventDefault();
+			
+			const accessKey = form.dataset.accessKey;
+			const lang = form.dataset.lang || 'fr';
+			
+			const sendingText = lang === 'fr' ? 'Envoi en cours...' : 'Sending...';
+			const successText = lang === 'fr' ? 'Message envoyé avec succès !' : 'Message sent successfully!';
+			const errorText = lang === 'fr' ? 'Une erreur est survenue.' : 'An error occurred.';
+
+			if (!accessKey) {
+				formStatus.textContent = lang === 'fr' ? "Erreur : Clé Web3Forms manquante." : "Error: Web3Forms Access Key is missing.";
+				formStatus.classList.remove('hidden', 'text-green-500');
+				formStatus.classList.add('text-red-500');
+				return;
+			}
+
+			// Change UI to sending state
+			submitBtn.disabled = true;
+			const originalText = submitBtn.textContent;
+			submitBtn.textContent = sendingText;
+
+			formStatus.classList.add('hidden');
+
+			const formData = new FormData(form);
+			const object = Object.fromEntries(formData);
+			object.access_key = accessKey;
+
+			try {
+				const response = await fetch('https://api.web3forms.com/submit', {
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/json',
+						'Accept': 'application/json'
+					},
+					body: JSON.stringify(object)
+				});
+
+				const json = await response.json();
+
+				if (response.status === 200 && json.success) {
+					formStatus.textContent = successText;
+					formStatus.classList.remove('hidden', 'text-red-500');
+					formStatus.classList.add('text-green-500');
+					form.reset();
+				} else {
+					formStatus.textContent = json.message || errorText;
+					formStatus.classList.remove('hidden', 'text-green-500');
+					formStatus.classList.add('text-red-500');
+				}
+			} catch (error) {
+				console.error(error);
+				formStatus.textContent = errorText;
+				formStatus.classList.remove('hidden', 'text-green-500');
+				formStatus.classList.add('text-red-500');
+			} finally {
+				submitBtn.disabled = false;
+				submitBtn.textContent = originalText;
+			}
+		});
+	}
+</script>
