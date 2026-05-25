@@ -10,5 +10,23 @@ export default defineConfig({
     plugins: [tailwindcss()]
   },
 
-  integrations: [react()]
+  integrations: [react()],
+
+  image: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: '**.strapiapp.com',
+      },
+      {
+        protocol: 'https',
+        hostname: '**.strapi.co',
+      },
+      {
+        protocol: 'http',
+        hostname: 'localhost',
+        port: '1337',
+      },
+    ],
+  },
 });
