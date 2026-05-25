@@ -34,6 +34,11 @@ export default async function fetchApi<T>({
     },
   });
 
+  if (!res.ok) {
+    const errorBody = await res.text();
+    throw new Error(`API request failed with status ${res.status}: ${errorBody}`);
+  }
+
   const data = await res.json();
 
   if (wrappedByKey) {
