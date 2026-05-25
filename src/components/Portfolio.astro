@@ -65,9 +65,9 @@ const staticProjects = [
 		image: img8,
 		year: "2022"
 	}
-];
+].map((p, index) => ({ ...p, id: -index, link: '', position: null }));
 
-let projects: Array<{ title: string; category: string; image: any; year: string }> = [];
+let projects: Array<{ id: number; title: string; category: string; image: any; year: string; link?: string; position?: number | null }> = [];
 
 try {
 	const strapiUrl = import.meta.env.PUBLIC_STRAPI_URL || 'https://optimistic-warmth-6e7694b576.strapiapp.com';
@@ -95,10 +95,13 @@ try {
 			}
 
 			return {
+				id: p.id,
 				title: attrs.title,
 				category: attrs.category,
 				image: imageUrl || img1,
 				year: attrs.year || '',
+				link: attrs.link || '',
+				position: attrs.position !== undefined && attrs.position !== null ? Number(attrs.position) : null,
 			};
 		});
 	}
@@ -110,6 +113,21 @@ try {
 if (!projects || projects.length === 0) {
 	projects = staticProjects;
 }
+
+// Sort projects by position ascending, then by year descending, then by id descending
+projects.sort((a, b) => {
+	const posA = a.position !== undefined && a.position !== null ? a.position : Infinity;
+	const posB = b.position !== undefined && b.position !== null ? b.position : Infinity;
+	if (posA !== posB) {
+		return posA - posB;
+	}
+	const yearA = parseInt(a.year) || 0;
+	const yearB = parseInt(b.year) || 0;
+	if (yearA !== yearB) {
+		return yearB - yearA;
+	}
+	return b.id - a.id;
+});
 ---
 
 <section id="portfolio" class="py-24 bg-[#050505]">
@@ -130,27 +148,32 @@ if (!projects || projects.length === 0) {
 		</div>
 
 		<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-1">
-			{projects.map((project, index) => (
-				<div class="group relative aspect-[3/4] overflow-hidden bg-[#111]">
-					<Image 
-						src={project.image} 
-						alt={project.title} 
-						class="w-full h-full object-cover saturate-50 group-hover:saturate-100 group-hover:scale-110 transition-all duration-700 ease-in-out opacity-70 group-hover:opacity-100"
-						loading="lazy"
-						width={600}
-						height={800}
-					/>
-					<div class="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent opacity-80 group-hover:opacity-90 transition-opacity"></div>
-					<div class="absolute inset-0 p-8 flex flex-col justify-end transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
-						<p class="text-[#D4AF37] text-[10px] font-bold tracking-[0.2em] uppercase mb-1">
-							{project.category.replace('Série TV', lang === 'fr' ? 'Série TV' : 'TV Series').replace('Documentaire', lang === 'fr' ? 'Documentaire' : 'Documentary').replace('Court Métrage', lang === 'fr' ? 'Court Métrage' : 'Short Film')} · {project.year}
-						</p>
-						<h4 class="text-white text-xl font-bold uppercase font-display leading-tight">{project.title}</h4>
-					</div>
-					<!-- Hover Border -->
-					<div class="absolute inset-0 border border-white/0 group-hover:border-white/10 transition-all duration-500 pointer-events-none"></div>
-				</div>
-			))}
+			{projects.map((project, index) => {
+				const Tag = project.link ? 'a' : 'div';
+				const extraAttrs = project.link ? { href: project.link, target: '_blank', rel: 'noopener noreferrer' } : {};
+
+				return (
+					<Tag class="group relative aspect-[3/4] overflow-hidden bg-[#111] block" {...extraAttrs}>
+						<Image 
+							src={project.image} 
+							alt={project.title} 
+							class="w-full h-full object-cover saturate-[0.3] group-hover:saturate-100 group-hover:scale-110 transition-all duration-700 ease-in-out opacity-70 group-hover:opacity-100"
+							loading="lazy"
+							width={600}
+							height={800}
+						/>
+						<div class="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent opacity-80 group-hover:opacity-90 transition-opacity"></div>
+						<div class="absolute inset-0 p-8 flex flex-col justify-end transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
+							<p class="text-[#D4AF37] text-[10px] font-bold tracking-[0.2em] uppercase mb-1">
+								{project.category.replace('Série TV', lang === 'fr' ? 'Série TV' : 'TV Series').replace('Documentaire', lang === 'fr' ? 'Documentaire' : 'Documentary').replace('Court Métrage', lang === 'fr' ? 'Court Métrage' : 'Short Film')} · {project.year}
+							</p>
+							<h4 class="text-white text-xl font-bold uppercase font-display leading-tight">{project.title}</h4>
+						</div>
+						<!-- Hover Border -->
+						<div class="absolute inset-0 border border-white/0 group-hover:border-white/10 transition-all duration-500 pointer-events-none"></div>
+					</Tag>
+				);
+			})}
 		</div>
 	</div>
 </section>
