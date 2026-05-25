@@ -28,7 +28,7 @@ const t = useTranslations(lang);
 				<Image 
 					src={hero2} 
 					alt="Julien Sena Tournage 2" 
-					class="w-full h-full object-cover scale-110"
+					class="w-full h-full object-cover scale-110 animate-ken-burns"
 					loading="lazy"
 				/>
 			</div>
@@ -36,7 +36,7 @@ const t = useTranslations(lang);
 				<Image 
 					src={hero3} 
 					alt="Julien Sena Tournage 3" 
-					class="w-full h-full object-cover scale-110"
+					class="w-full h-full object-cover scale-110 animate-ken-burns"
 					loading="lazy"
 				/>
 			</div>
@@ -77,12 +77,16 @@ const t = useTranslations(lang);
 					<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-globe"><circle cx="12" cy="12" r="10"></circle><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"></path><path d="M2 12h20"></path></svg>
 					UniFrance
 				</a>
+				<a href="https://www.instagram.com/julien_sena/" target="_blank" class="px-8 py-4 border border-white/10 bg-white/5 text-white font-bold uppercase tracking-widest text-xs rounded-none hover:bg-white/10 hover:border-[#D4AF37] hover:text-[#D4AF37] transition-all duration-500 text-center flex items-center justify-center gap-2">
+					<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-instagram"><rect width="20" height="20" x="2" y="2" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"></line></svg>
+					Instagram
+				</a>
 			</div>
 		</div>
 	</div>
 
 	<!-- Scroll Indicator -->
-	<div class="absolute bottom-10 left-1/2 -translate-x-1/2 z-10 hidden md:flex flex-col items-center space-y-4">
+	<div class="absolute bottom-10 right-6 md:right-12 z-10 hidden md:flex flex-col items-center space-y-4">
 		<span class="text-[10px] uppercase tracking-[0.5em] text-gray-500 font-bold">Scroll</span>
 		<div class="w-[1px] h-16 bg-gradient-to-b from-[#D4AF37] to-transparent animate-bounce"></div>
 	</div>
@@ -138,14 +142,12 @@ const t = useTranslations(lang);
 		const current = slides[currentSlide] as HTMLElement;
 		current.classList.remove('opacity-100');
 		current.classList.add('opacity-0');
-		current.querySelector('img')?.classList.remove('animate-ken-burns');
 		
 		currentSlide = (currentSlide + 1) % slides.length;
 		
 		const next = slides[currentSlide] as HTMLElement;
 		next.classList.remove('opacity-0');
 		next.classList.add('opacity-100');
-		next.querySelector('img')?.classList.add('animate-ken-burns');
 	}
 
 	if (slides.length > 0) {
