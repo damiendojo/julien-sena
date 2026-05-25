@@ -7,42 +7,66 @@ const t = useTranslations(lang);
 const equipmentCategories = [
 	{
 		title: t('equipment.cat.recording'),
-		items: [
+		items: lang === 'fr' ? [
 			"1 Enregistreur Zaxcom Nomad 12 Touch",
 			"1 Enregistreur Zaxcom Nomad 10 pistes",
 			"1 surface de mixage Zaxcom Mix8",
-			"1 boitier de gestion d'alimentation audioroot",
-			"1 roulante Son"
+			"1 boitier de gestion d'alimentation Audioroot",
+			"1 Roulante Son"
+		] : [
+			"1 Zaxcom Nomad 12 Touch Recorder",
+			"1 Zaxcom Nomad 10-track Recorder",
+			"1 Zaxcom Mix8 Mixing Surface",
+			"1 Audioroot Power Distribution Box",
+			"1 Sound Cart"
 		]
 	},
 	{
 		title: t('equipment.cat.wireless'),
-		items: [
+		items: lang === 'fr' ? [
 			"1 splitter d'antenne Betso Octopus",
 			"2 antennes bowtie Betso",
 			"3 boitiers TC Tentacles sync",
 			"2 wisycom mcr42S3 + 1 mtp40S + 3 mtp41S",
 			"2 HF Sennheiser EK 100 + 2 EW 100 G3"
+		] : [
+			"1 Betso Octopus Antenna Splitter",
+			"2 Betso Bowtie Antennas",
+			"3 Tentacle Sync Timecode Boxes",
+			"2 Wisycom MCR42S3 + 1 MTP40S + 3 MTP41S Systems",
+			"2 Sennheiser EK 100 + 2 EW 100 G3 Wireless Systems"
 		]
 	},
 	{
 		title: t('equipment.cat.microphones'),
-		items: [
+		items: lang === 'fr' ? [
 			"1 micro Schoeps CMIT",
 			"1 micro Schoeps cmc6mk41",
 			"1 micro Neumann km150",
 			"4 micros cravate Sanken COS11-D",
 			"1 couple Stereo Oktava",
 			"1 Ambient UMPIII + 1 Ambient UMPII"
+		] : [
+			"1 Schoeps CMIT Shotgun Microphone",
+			"1 Schoeps CMC6 MK41 Microphone",
+			"1 Neumann KM150 Microphone",
+			"4 Sanken COS11-D Lavalier Microphones",
+			"1 Oktava Stereo Match Pair",
+			"1 Ambient UMPIII + 1 Ambient UMPII Power Supplies"
 		]
 	},
 	{
 		title: t('equipment.cat.accessories'),
-		items: [
+		items: lang === 'fr' ? [
 			"1 perche Ambient",
 			"1 perche VDB",
 			"Kit de protection vent",
 			"Accessoires divers"
+		] : [
+			"1 Ambient Boom Pole",
+			"1 VDB Boom Pole",
+			"Windshield / Wind Protection Kit",
+			"Miscellaneous Accessories"
 		]
 	}
 ];

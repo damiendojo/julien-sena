@@ -15,6 +15,21 @@ import Footer from '../components/Footer.astro';
 	{/* @ts-ignore */}
 	lang="fr"
 >
+	<script is:inline>
+		(function() {
+			const savedLang = localStorage.getItem('preferred-lang');
+			if (savedLang === 'en') {
+				window.location.replace('/en/');
+				return;
+			}
+			if (!savedLang) {
+				const browserLang = navigator.language || navigator.userLanguage || '';
+				if (browserLang.startsWith('en')) {
+					window.location.replace('/en/');
+				}
+			}
+		})();
+	</script>
 	<Navbar />
 	<main>
 		<Hero />

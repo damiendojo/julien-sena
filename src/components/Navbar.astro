@@ -28,9 +28,9 @@ const t = useTranslations(lang);
 			
 			<!-- Language Switcher -->
 			<div class="flex items-center space-x-3 ml-4 border-l border-white/10 pl-8">
-				<a href="/" class={`text-[10px] font-bold tracking-widest transition-colors ${lang === 'fr' ? 'text-[#D4AF37]' : 'text-gray-500 hover:text-white'}`}>FR</a>
+				<a href="/" data-lang-link="fr" class={`text-[10px] font-bold tracking-widest transition-colors ${lang === 'fr' ? 'text-[#D4AF37]' : 'text-gray-500 hover:text-white'}`}>FR</a>
 				<span class="text-gray-700 text-[10px]">/</span>
-				<a href="/en" class={`text-[10px] font-bold tracking-widest transition-colors ${lang === 'en' ? 'text-[#D4AF37]' : 'text-gray-500 hover:text-white'}`}>EN</a>
+				<a href="/en" data-lang-link="en" class={`text-[10px] font-bold tracking-widest transition-colors ${lang === 'en' ? 'text-[#D4AF37]' : 'text-gray-500 hover:text-white'}`}>EN</a>
 			</div>
 		</div>
 
@@ -51,9 +51,9 @@ const t = useTranslations(lang);
 		
 		<!-- Mobile Language Switcher -->
 		<div class="flex items-center space-x-6 mt-8">
-			<a href="/" class={`text-sm font-bold tracking-[0.3em] transition-colors ${lang === 'fr' ? 'text-[#D4AF37]' : 'text-gray-500'}`}>FR</a>
+			<a href="/" data-lang-link="fr" class={`text-sm font-bold tracking-[0.3em] transition-colors ${lang === 'fr' ? 'text-[#D4AF37]' : 'text-gray-500'}`}>FR</a>
 			<span class="text-gray-700">|</span>
-			<a href="/en" class={`text-sm font-bold tracking-[0.3em] transition-colors ${lang === 'en' ? 'text-[#D4AF37]' : 'text-gray-500'}`}>EN</a>
+			<a href="/en" data-lang-link="en" class={`text-sm font-bold tracking-[0.3em] transition-colors ${lang === 'en' ? 'text-[#D4AF37]' : 'text-gray-500'}`}>EN</a>
 		</div>
 
 		<div class="flex space-x-6 mt-12 pb-20">
@@ -92,6 +92,17 @@ const t = useTranslations(lang);
 	mobileLinks.forEach(link => {
 		link.addEventListener('click', () => {
 			mobileMenu?.classList.add('translate-x-full');
+		});
+	});
+
+	// Language preference handler
+	const langLinks = document.querySelectorAll('[data-lang-link]');
+	langLinks.forEach(link => {
+		link.addEventListener('click', () => {
+			const selectedLang = link.getAttribute('data-lang-link');
+			if (selectedLang) {
+				localStorage.setItem('preferred-lang', selectedLang);
+			}
 		});
 	});
 </script>
