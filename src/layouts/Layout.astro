@@ -9,6 +9,9 @@ interface Props {
 }
 
 const { title, description = "Julien Sena - Production Sound Mixer", lang = 'fr' } = Astro.props;
+
+// Dynamically construct the canonical URL
+const canonicalUrl = new URL(Astro.url.pathname, 'https://www.juliensena.fr').toString();
 ---
 
 <!doctype html>
@@ -20,23 +23,27 @@ const { title, description = "Julien Sena - Production Sound Mixer", lang = 'fr'
 		<meta name="generator" content={Astro.generator} />
 		<title>{title}</title>
 		<meta name="description" content={description} />
-		<link rel="canonical" href="https://www.juliensena.fr/" />
+		<link rel="canonical" href={canonicalUrl} />
 		<meta name="robots" content="index, follow" />
+
+		<!-- Multilingual alternate links -->
+		<link rel="alternate" hreflang="fr" href="https://www.juliensena.fr/" />
+		<link rel="alternate" hreflang="en" href="https://www.juliensena.fr/en/" />
+		<link rel="alternate" hreflang="x-default" href="https://www.juliensena.fr/" />
 
 		<!-- Open Graph / Facebook -->
 		<meta property="og:type" content="website" />
-		<meta property="og:url" content="https://www.juliensena.fr/" />
+		<meta property="og:url" content={canonicalUrl} />
 		<meta property="og:title" content={title} />
 		<meta property="og:description" content={description} />
 		<meta property="og:image" content="https://www.juliensena.fr/assets/photos/IMG_1792.JPG" />
 
 		<!-- Twitter -->
 		<meta property="twitter:card" content="summary_large_image" />
-		<meta property="twitter:url" content="https://www.juliensena.fr/" />
+		<meta property="twitter:url" content={canonicalUrl} />
 		<meta property="twitter:title" content={title} />
 		<meta property="twitter:description" content={description} />
 		<meta property="twitter:image" content="https://www.juliensena.fr/assets/photos/IMG_1792.JPG" />
-		<meta name="robots" content="index, follow" />
 
 		<!-- Structured Data -->
 		<script type="application/ld+json" set:html={JSON.stringify({
@@ -52,8 +59,8 @@ const { title, description = "Julien Sena - Production Sound Mixer", lang = 'fr'
 			"description": description,
 			"address": {
 				"@type": "PostalAddress",
-				"addressLocality": "Romainville",
-				"addressRegion": "Région Parisienne",
+				"addressLocality": "Paris",
+				"addressRegion": "Île-de-France",
 				"addressCountry": "FR"
 			}
 		})} />
